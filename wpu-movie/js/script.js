@@ -55,5 +55,46 @@ $('#search-input').on('keyup', (e) =>{
 })
 
 $('#movie-list').on('click','.see-detail', function(){
-   console.log($(this).data('id'))  
+   console.log($(this).data('id')) 
+   $.ajax({
+      url : 'http://www.omdbapi.com',
+      type : 'get',
+      dataType : 'json',
+      data : {
+         'apikey' : '68cf7949',
+         'i' : $(this).data('id')
+      },
+      success: (result)=>{
+         console.log(result)
+         console.log(result.Title)
+         console.log(result.Actors)
+         // console.log(result.Ratings[1].Value)
+
+         $('.modal-body').html(`
+         <div class="card mb-3" >
+            <div class="row g-0">
+            <div class="col-md-4">
+               <img src="`+result.Poster+`" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+               <div class="card-body">
+               <div class="card" >
+                  <div class="card-footer">
+                     `+result.Title+`
+                  </div>
+                  <ul class="list-group list-group-flush">
+                  <li class="list-group-item">`+result.Plot+`</li>
+                  <li class="list-group-item">Actors`+result.Actors+`</li>
+                  <li class="list-group-item">Genre`+result.Genre+`</li>
+                  </ul>
+               </div>
+               </div>
+            </div>
+            </div>
+         </div>
+               `)
+        
+      }
+
+   })
 })
